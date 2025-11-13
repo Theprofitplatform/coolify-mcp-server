@@ -1,0 +1,47 @@
+{
+  "environments": {
+    "production": {
+      "branch": "main",
+      "domain": "app.theprofitplatform.com.au",
+      "coolify_app_id": "YOUR-PRODUCTION-APP-UUID",
+      "force_rebuild": true,
+      "run_tests": true,
+      "health_check": true,
+      "health_check_url": "https://app.theprofitplatform.com.au/health",
+      "deployment": {
+        "timeout": 600,
+        "max_retries": 3,
+        "health_check_delay": 30
+      }
+    },
+    "staging": {
+      "branch": "develop",
+      "domain": "test.theprofitplatform.com.au",
+      "coolify_app_id": "YOUR-STAGING-APP-UUID",
+      "force_rebuild": false,
+      "run_tests": true,
+      "health_check": true,
+      "health_check_url": "https://test.theprofitplatform.com.au/health",
+      "deployment": {
+        "timeout": 600,
+        "max_retries": 3,
+        "health_check_delay": 30
+      }
+    }
+  },
+  "notifications": {
+    "slack_webhook": "https://hooks.slack.com/services/YOUR/WEBHOOK/URL",
+    "enabled": false
+  },
+  "rollback": {
+    "auto_rollback_on_failure": true,
+    "keep_previous_versions": 5
+  },
+  "healthChecks": {
+    "enabled": true,
+    "endpoint": "/health",
+    "timeout": 30,
+    "retry_count": 5,
+    "retry_delay": 5
+  }
+}
