@@ -245,7 +245,7 @@ Lines of Code:       ~510 lines
   - Tool implementations: ~450 lines
   - Schema definitions:   ~60 lines
 
-Tool Count:          37 tools total
+Tool Count:          35 tools total
   - Original:        32 tools
   - Batch ops:       +5 tools
 
@@ -456,7 +456,7 @@ $ npm run build
 
 ✅ **Build Compilation:** Passed
 ✅ **Import Test:** Registry imports successfully
-✅ **Tool Count:** 37 tools registered (32 + 5)
+✅ **Tool Count:** 35 tools registered (32 + 5)
 ✅ **Schema Validation:** All schemas compile
 ✅ **File Structure:** All files in correct locations
 

@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **86% code reduction** in main server file (1,552 → 224 lines)
 - Created `BaseTool` abstract class for code reuse
 - Implemented `ToolRegistry` pattern for dynamic tool loading
-- Organized all 37 tools into logical category directories:
+- Organized all 35 tools into logical category directories:
   - `applications/` - 5 tools
   - `batch/` - 5 tools (NEW)
   - `deployments/` - 2 tools

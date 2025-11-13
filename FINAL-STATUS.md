@@ -10,7 +10,7 @@
 
 ### Code Metrics
 ```
-Total Tools:              37 tools (100% working)
+Total Tools:              35 tools (100% working)
   - Core tools:          32 tools
   - Batch operations:     5 tools (NEW)
 
@@ -101,7 +101,7 @@ Production Ready:         ✅ Yes
 
 ---
 
-## 🎯 All 37 Tools
+## 🎯 All 35 Tools
 
 ### Health & Version (2)
 ✅ get_version
@@ -165,7 +165,7 @@ Production Ready:         ✅ Yes
 ```bash
 $ npm run build
 ✅ TypeScript compilation successful
-✅ All 37 tools compiled
+✅ All 35 tools compiled
 ✅ All schemas validated
 ✅ Build artifacts generated
 ✅ Executable permissions set
@@ -212,7 +212,7 @@ Total size: ~180 KB
 1. **README.md** (540 lines)
    - Complete feature overview
    - Installation instructions
-   - All 37 tools documented
+   - All 35 tools documented
    - Usage examples
    - Troubleshooting guide
 
@@ -255,7 +255,7 @@ Total size: ~180 KB
 ## 🎁 Key Achievements
 
 ### Technical Excellence
-✅ **37 tools** - Complete Coolify API coverage
+✅ **35 tools** - Complete Coolify API coverage
 ✅ **86% code reduction** - Modular architecture
 ✅ **10x faster** - Batch operations performance
 ✅ **Type-safe** - Full TypeScript + Zod

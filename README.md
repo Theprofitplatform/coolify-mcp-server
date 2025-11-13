@@ -4,7 +4,7 @@
 
 **Production-ready Model Context Protocol server for Coolify API integration**
 
-A professional, modular MCP server providing comprehensive integration with Coolify's self-hosted deployment platform. Built with TypeScript, featuring 37 tools including advanced batch operations for managing multiple resources simultaneously.
+A professional, modular MCP server providing comprehensive integration with Coolify's self-hosted deployment platform. Built with TypeScript, featuring 35 tools including advanced batch operations for managing multiple resources simultaneously.
 
 [![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](https://github.com/wrediam/coolify-mcp-server)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -347,7 +347,7 @@ src/
 ├── index.ts                 # Main server (224 lines)
 ├── tools/
 │   ├── base.ts             # BaseTool abstract class
-│   ├── registry.ts         # ToolRegistry (37 tools)
+│   ├── registry.ts         # ToolRegistry (35 tools)
 │   ├── applications/       # 5 application tools
 │   ├── batch/              # 5 batch operation tools ⭐
 │   ├── deployments/        # 2 deployment tools
@@ -534,6 +534,6 @@ If you find this project useful, please consider:
 
 ---
 
-**Ready for Production** | **37 Tools** | **Type-Safe** | **10x Faster Batch Operations**
+**Ready for Production** | **35 Tools** | **Type-Safe** | **10x Faster Batch Operations**
 
 🤖 Built with [Claude Code](https://claude.com/claude-code)

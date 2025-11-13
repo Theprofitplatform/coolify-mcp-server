@@ -3,7 +3,7 @@
 **Status:** ✅ **100% COMPLETE**
 **Date:** 2025-11-13
 **Total Development Time:** ~5-6 hours
-**Final Tool Count:** 37 tools (32 core + 5 batch)
+**Final Tool Count:** 35 tools (32 core + 5 batch)
 **Code Quality:** Excellent
 **Production Ready:** ✅ Yes
 
@@ -180,7 +180,7 @@ coolify-mcp/
 │   ├── index.ts                    # Main server (224 lines)
 │   ├── tools/
 │   │   ├── base.ts                 # BaseTool abstract class
-│   │   ├── registry.ts             # ToolRegistry (37 tools)
+│   │   ├── registry.ts             # ToolRegistry (35 tools)
 │   │   ├── applications/           # 5 application tools
 │   │   ├── batch/                  # 5 batch operation tools ⭐
 │   │   ├── deployments/            # 2 deployment tools
@@ -343,7 +343,7 @@ node build/index.js
 # Success! Server should start and show:
 # [CoolifyServer] Starting Coolify MCP Server
 # [CoolifyServer] Coolify version detected
-# [ToolRegistry] Registered 37 tools
+# [ToolRegistry] Registered 35 tools
 # [CoolifyServer] Coolify MCP Server started successfully
 ```
 
@@ -484,7 +484,7 @@ const newServer = await client.callTool('create_server', {
 ## 🎯 Key Features
 
 ### 1. Comprehensive Tool Coverage
-✅ **37 tools** covering all Coolify API operations
+✅ **35 tools** covering all Coolify API operations
 ✅ **10 categories** organized by functionality
 ✅ **Batch operations** for multi-resource management
 
@@ -564,7 +564,7 @@ const newServer = await client.callTool('create_server', {
 
 ✅ **Professional Architecture** - World-class code organization
 ✅ **86% Code Reduction** - From 1,552 to 224 lines in main file
-✅ **37 Tools Implemented** - Complete Coolify API coverage
+✅ **35 Tools Implemented** - Complete Coolify API coverage
 ✅ **10x Performance Gain** - Batch operations vs sequential
 ✅ **Zero Breaking Changes** - Backward compatible throughout
 ✅ **Type-Safe Codebase** - 100% TypeScript coverage
@@ -627,7 +627,7 @@ Phase 1:  Basic functionality working
 Phase 2:  Professional quality added
 Phase 3:  Clean architecture implemented
 Phase 4:  Batch operations completed
-Result:   Production-ready (224 lines main, 37 tools)
+Result:   Production-ready (224 lines main, 35 tools)
 
 Total Time: ~5-6 hours
 Code Reduction: 86%
@@ -648,7 +648,7 @@ Status: ✅ Production Ready
 
 ### Source Code
 - `src/` - All source code
-- `src/tools/` - All 37 tools
+- `src/tools/` - All 35 tools
 - `src/schemas/` - Validation schemas
 - `src/utils/` - Utilities
 
@@ -692,7 +692,7 @@ The **Coolify MCP Server** project is **100% complete** and **production-ready**
 ║                                                            ║
 ║         COOLIFY MCP SERVER - FULLY COMPLETE                ║
 ║                                                            ║
-║              37 Tools | 100% Complete                      ║
+║              35 Tools | 100% Complete                      ║
 ║          Production Ready | Well Documented                ║
 ║                                                            ║
 ║              🚀 READY TO SHIP! 🚀                         ║
