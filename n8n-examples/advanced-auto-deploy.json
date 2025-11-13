@@ -1,0 +1,404 @@
+{
+  "name": "Advanced Auto-Deploy: GitHub → Coolify",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "github-deploy",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "GitHub Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "github-deploy"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"ref\"]}}",
+              "operation": "equals",
+              "value2": "refs/heads/main"
+            }
+          ]
+        }
+      },
+      "name": "Filter Branch",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Extract deployment info from GitHub webhook\nconst repo = $json.repository.name;\nconst branch = $json.ref.split('/').pop();\nconst commit = {\n  sha: $json.after,\n  message: $json.head_commit?.message || 'No message',\n  author: $json.head_commit?.author?.name || 'Unknown'\n};\n\n// Determine environment based on branch\nconst environment = branch === 'main' ? 'production' : 'staging';\nconst domain = branch === 'main' \n  ? 'app.theprofitplatform.com.au' \n  : 'test.theprofitplatform.com.au';\n\n// Load deployment config if available\nlet appUuid = 'YOUR-APP-UUID'; // Default, should be replaced\nlet healthCheckUrl = `https://${domain}/health`;\n\ntry {\n  // Try to read deploy config from webhook payload\n  if ($json.repository?.deploy_config) {\n    const config = JSON.parse($json.repository.deploy_config);\n    appUuid = config.environments?.[environment]?.coolify_app_id || appUuid;\n    healthCheckUrl = config.environments?.[environment]?.health_check_url || healthCheckUrl;\n  }\n} catch (error) {\n  // Config not available, use defaults\n}\n\nreturn {\n  json: {\n    repo,\n    branch,\n    environment,\n    domain,\n    commit,\n    appUuid,\n    healthCheckUrl,\n    timestamp: new Date().toISOString()\n  }\n};"
+      },
+      "name": "Parse Webhook Data",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [650, 200]
+    },
+    {
+      "parameters": {
+        "url": "={{$json[\"healthCheckUrl\"]}}",
+        "authentication": "none",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "name": "Pre-Deploy Health Check",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [850, 200],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "url": "=https://coolify.theprofitplatform.com.au/api/v1/applications/{{$json[\"appUuid\"]}}/deploy",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ***REMOVED***"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Deploy to Coolify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1050, 200],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$json[\"statusCode\"]}}",
+              "operation": "equal",
+              "value2": 200
+            }
+          ]
+        }
+      },
+      "name": "Check Deploy Success",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1250, 200]
+    },
+    {
+      "parameters": {
+        "amount": 30,
+        "unit": "seconds"
+      },
+      "name": "Wait for Deployment",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [1450, 100]
+    },
+    {
+      "parameters": {
+        "url": "={{$json[\"healthCheckUrl\"]}}",
+        "authentication": "none",
+        "options": {
+          "timeout": 30000,
+          "retry": {
+            "maxRetries": 5,
+            "retryInterval": 5000
+          }
+        }
+      },
+      "name": "Post-Deploy Health Check",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1650, 100],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value1": "={{$json[\"statusCode\"]}}",
+              "operation": "equal",
+              "value2": 200
+            }
+          ]
+        }
+      },
+      "name": "Check Health",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1850, 100]
+    },
+    {
+      "parameters": {
+        "url": "=https://coolify.theprofitplatform.com.au/api/v1/applications/{{$json[\"appUuid\"]}}/rollback",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ***REMOVED***"
+            }
+          ]
+        }
+      },
+      "name": "Rollback on Failure",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [1850, 300],
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "functionCode": "// Create success notification message\nconst data = $json;\n\nreturn {\n  json: {\n    status: 'success',\n    message: `🚀 Deployment Successful!\\n\\n📦 Repository: ${data.repo}\\n🌿 Branch: ${data.branch}\\n🌍 Environment: ${data.environment}\\n🔗 Domain: ${data.domain}\\n\\n✅ Commit: ${data.commit.sha.substring(0, 7)}\\n💬 Message: ${data.commit.message}\\n👤 Author: ${data.commit.author}\\n\\n🕐 Time: ${data.timestamp}\\n✓ Health check passed`,\n    color: 'good',\n    ...data\n  }\n};"
+      },
+      "name": "Format Success Message",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [2050, 100]
+    },
+    {
+      "parameters": {
+        "functionCode": "// Create failure notification message\nconst data = $json;\nconst error = data.error || 'Unknown error';\n\nreturn {\n  json: {\n    status: 'failure',\n    message: `❌ Deployment Failed\\n\\n📦 Repository: ${data.repo}\\n🌿 Branch: ${data.branch}\\n🌍 Environment: ${data.environment}\\n\\n⚠️ Error: ${error}\\n\\n🔄 Rollback initiated\\n🕐 Time: ${data.timestamp}`,\n    color: 'danger',\n    ...data\n  }\n};"
+      },
+      "name": "Format Failure Message",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [2050, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "webhook",
+        "text": "={{$json[\"message\"]}}",
+        "attachments": [],
+        "otherOptions": {
+          "color": "={{$json[\"color\"]}}"
+        }
+      },
+      "name": "Notify Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [2250, 200],
+      "continueOnFail": true,
+      "disabled": true,
+      "notes": "Enable and configure Slack webhook to use"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json}}",
+        "options": {}
+      },
+      "name": "Webhook Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2450, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"ref\"]}}",
+              "operation": "equals",
+              "value2": "refs/heads/develop"
+            }
+          ]
+        }
+      },
+      "name": "Or Staging Branch",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [450, 400]
+    }
+  ],
+  "connections": {
+    "GitHub Webhook": {
+      "main": [
+        [
+          {
+            "node": "Filter Branch",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Or Staging Branch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Branch": {
+      "main": [
+        [
+          {
+            "node": "Parse Webhook Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Or Staging Branch": {
+      "main": [
+        [
+          {
+            "node": "Parse Webhook Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Webhook Data": {
+      "main": [
+        [
+          {
+            "node": "Pre-Deploy Health Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pre-Deploy Health Check": {
+      "main": [
+        [
+          {
+            "node": "Deploy to Coolify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Deploy to Coolify": {
+      "main": [
+        [
+          {
+            "node": "Check Deploy Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Deploy Success": {
+      "main": [
+        [
+          {
+            "node": "Wait for Deployment",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Format Failure Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Deployment": {
+      "main": [
+        [
+          {
+            "node": "Post-Deploy Health Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post-Deploy Health Check": {
+      "main": [
+        [
+          {
+            "node": "Check Health",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Health": {
+      "main": [
+        [
+          {
+            "node": "Format Success Message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Rollback on Failure",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Rollback on Failure": {
+      "main": [
+        [
+          {
+            "node": "Format Failure Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Success Message": {
+      "main": [
+        [
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Failure Message": {
+      "main": [
+        [
+          {
+            "node": "Notify Slack",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify Slack": {
+      "main": [
+        [
+          {
+            "node": "Webhook Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "advanced-auto-deploy"
+}
