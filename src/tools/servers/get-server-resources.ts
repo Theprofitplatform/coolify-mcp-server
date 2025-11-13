@@ -8,6 +8,11 @@ import { BaseTool } from '../base.js';
 import { GetServerResourcesSchema } from '../../schemas/server.schemas.js';
 
 export class GetServerResourcesTool extends BaseTool {
+  constructor(apiClient: any, version?: any) {
+    super(apiClient, version);
+    this.initLogger();
+  }
+
   get name(): string {
     return 'get_server_resources';
   }
