@@ -4,6 +4,22 @@
 
 ---
 
+## 🔐 **IMPORTANT SECURITY NOTE**
+
+⚠️ **Before you start:**
+1. Create `.env` file from `.env.example`
+2. Add your actual API token to `.env`
+3. **NEVER** commit `.env` to git
+4. The `.gitignore` is already configured to exclude it
+
+```bash
+# Copy example and edit
+cp .env.example .env
+nano .env  # Add your COOLIFY_TOKEN
+```
+
+---
+
 ## 📦 What You Get
 
 ✅ **Automatic deployments** when you push to GitHub
