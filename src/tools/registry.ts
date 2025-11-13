@@ -8,21 +8,53 @@ import type { CoolifyVersion, ToolDefinition } from '../types/tool.js';
 import { BaseTool } from './base.js';
 import { createLogger } from '../utils/logger.js';
 
-// Import server tools
+// Server tools
 import { ListServersTool } from './servers/list-servers.js';
 import { GetServerResourcesTool } from './servers/get-server-resources.js';
+import { CreateServerTool } from './servers/create-server.js';
+import { ValidateServerTool } from './servers/validate-server.js';
+import { GetServerDomainsTool } from './servers/get-server-domains.js';
 
-// Import key tools
-import { ListPrivateKeysTool } from './keys/list-private-keys.js';
-import { CreatePrivateKeyTool } from './keys/create-private-key.js';
+// Project tools
+import { ListProjectsTool } from './projects/list-projects.js';
+import { GetProjectTool } from './projects/get-project.js';
+import { CreateProjectTool } from './projects/create-project.js';
 
-// Import deployment tools
+// Team tools
+import { ListTeamsTool } from './teams/list-teams.js';
+import { GetTeamTool } from './teams/get-team.js';
+import { GetCurrentTeamTool } from './teams/get-current-team.js';
+import { GetCurrentTeamMembersTool } from './teams/get-current-team-members.js';
+
+// Environment tools
+import { ListEnvironmentsTool } from './environments/list-environments.js';
+import { CreateEnvironmentTool } from './environments/create-environment.js';
+
+// Deployment tools
 import { ListDeploymentsTool } from './deployments/list-deployments.js';
 import { GetDeploymentTool } from './deployments/get-deployment.js';
 
-// Import environment tools
-import { ListEnvironmentsTool } from './environments/list-environments.js';
-import { CreateEnvironmentTool } from './environments/create-environment.js';
+// Private Key tools
+import { ListPrivateKeysTool } from './keys/list-private-keys.js';
+import { CreatePrivateKeyTool } from './keys/create-private-key.js';
+
+// Health/Version tools
+import { GetVersionTool } from './health/get-version.js';
+import { HealthCheckTool } from './health/health-check.js';
+
+// Application tools
+import { ListApplicationsTool } from './applications/list-applications.js';
+import { CreateApplicationTool } from './applications/create-application.js';
+import { StopApplicationTool } from './applications/stop-application.js';
+import { RestartApplicationTool } from './applications/restart-application.js';
+import { GetApplicationLogsTool } from './applications/get-application-logs.js';
+
+// Service tools
+import { ListServicesTool } from './services/list-services.js';
+import { CreateServiceTool } from './services/create-service.js';
+import { StartServiceTool } from './services/start-service.js';
+import { StopServiceTool } from './services/stop-service.js';
+import { RestartServiceTool } from './services/restart-service.js';
 
 type ToolConstructor = new (apiClient: AxiosInstance, version?: CoolifyVersion) => BaseTool;
 
@@ -42,27 +74,53 @@ export class ToolRegistry {
    */
   private registerTools(): void {
     const toolClasses: ToolConstructor[] = [
-      // Server tools
+      // Health & Version (2)
+      GetVersionTool,
+      HealthCheckTool,
+
+      // Server tools (5)
       ListServersTool,
       GetServerResourcesTool,
+      CreateServerTool,
+      ValidateServerTool,
+      GetServerDomainsTool,
 
-      // Private Key tools
-      ListPrivateKeysTool,
-      CreatePrivateKeyTool,
+      // Project tools (3)
+      ListProjectsTool,
+      GetProjectTool,
+      CreateProjectTool,
 
-      // Deployment tools
-      ListDeploymentsTool,
-      GetDeploymentTool,
+      // Team tools (4)
+      ListTeamsTool,
+      GetTeamTool,
+      GetCurrentTeamTool,
+      GetCurrentTeamMembersTool,
 
-      // Environment tools
+      // Environment tools (2)
       ListEnvironmentsTool,
       CreateEnvironmentTool,
 
-      // TODO: Add more tools as they are migrated:
-      // - Projects
-      // - Applications
-      // - Services
-      // - Teams
+      // Deployment tools (2)
+      ListDeploymentsTool,
+      GetDeploymentTool,
+
+      // Private Key tools (2)
+      ListPrivateKeysTool,
+      CreatePrivateKeyTool,
+
+      // Application tools (5)
+      ListApplicationsTool,
+      CreateApplicationTool,
+      StopApplicationTool,
+      RestartApplicationTool,
+      GetApplicationLogsTool,
+
+      // Service tools (5)
+      ListServicesTool,
+      CreateServiceTool,
+      StartServiceTool,
+      StopServiceTool,
+      RestartServiceTool,
     ];
 
     toolClasses.forEach((ToolClass) => {
