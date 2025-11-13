@@ -1,0 +1,95 @@
+{
+  "name": "GitHub Push → Coolify Deploy",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "github-deploy",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "name": "GitHub Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "github-deploy"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"ref\"]}}",
+              "operation": "equals",
+              "value2": "refs/heads/main"
+            }
+          ]
+        }
+      },
+      "name": "Only Main Branch",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://coolify.theprofitplatform.com.au/api/v1/applications/={{$json[\"app_id\"]}}/deploy",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer ***REMOVED***"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "commit_sha",
+              "value": "={{$json[\"after\"]}}"
+            },
+            {
+              "name": "force_rebuild",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Deploy to Coolify",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 3,
+      "position": [650, 250]
+    },
+    {
+      "parameters": {
+        "channel": "#deployments",
+        "text": "🚀 Deployed {{$json[\"repository\"][\"name\"]}} to production\nCommit: {{$json[\"head_commit\"][\"message\"]}}\nAuthor: {{$json[\"head_commit\"][\"author\"][\"name\"]}}",
+        "otherOptions": {}
+      },
+      "name": "Notify Slack",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [850, 250]
+    }
+  ],
+  "connections": {
+    "GitHub Webhook": {
+      "main": [[{ "node": "Only Main Branch", "type": "main", "index": 0 }]]
+    },
+    "Only Main Branch": {
+      "main": [
+        [{ "node": "Deploy to Coolify", "type": "main", "index": 0 }]
+      ]
+    },
+    "Deploy to Coolify": {
+      "main": [[{ "node": "Notify Slack", "type": "main", "index": 0 }]]
+    }
+  }
+}

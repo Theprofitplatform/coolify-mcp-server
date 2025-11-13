@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "coolify": {
+      "command": "node",
+      "args": ["/home/avi/projects/coolify/coolify-mcp/build/index.js"],
+      "env": {
+        "COOLIFY_BASE_URL": "https://coolify.theprofitplatform.com.au",
+        "COOLIFY_TOKEN": "***REMOVED***"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}

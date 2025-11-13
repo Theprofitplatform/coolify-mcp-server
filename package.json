@@ -1,7 +1,7 @@
 {
   "name": "coolify-mcp-server",
-  "version": "0.1.13",
-  "description": "MCP server for Coolify API integration",
+  "version": "0.2.0",
+  "description": "MCP server for Coolify API integration - Enhanced with testing and automation",
   "type": "module",
   "main": "build/index.js",
   "bin": {
@@ -10,6 +10,15 @@
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
     "start": "node build/index.js",
+    "dev": "tsc --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "test:api": "node test-connection.js",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:check": "prettier --check \"src/**/*.ts\"",
     "prepublishOnly": "npm run build"
   },
   "keywords": [
@@ -26,7 +35,17 @@
     "axios": "^1.6.7"
   },
   "devDependencies": {
+    "@types/jest": "30.0.0",
     "@types/node": "^20.11.24",
+    "@typescript-eslint/eslint-plugin": "8.46.4",
+    "@typescript-eslint/parser": "8.46.4",
+    "dotenv": "17.2.3",
+    "eslint": "9.39.1",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-prettier": "5.5.4",
+    "jest": "30.2.0",
+    "prettier": "3.6.2",
+    "ts-jest": "29.4.5",
     "typescript": "^5.3.3"
   },
   "repository": {
