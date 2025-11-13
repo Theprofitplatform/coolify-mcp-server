@@ -53,7 +53,7 @@ npm run build
 
 # You should see:
 # ✅ TypeScript compilation successful
-# ✅ All 37 tools compiled
+# ✅ All 35 tools compiled
 # ✅ Zero errors
 ```
 
@@ -73,7 +73,7 @@ npm start
 # You should see logs like:
 # [CoolifyServer] Starting Coolify MCP Server
 # [CoolifyServer] Coolify version detected { version: '4.0.0-beta.442' }
-# [ToolRegistry] Registered 37 tools
+# [ToolRegistry] Registered 35 tools
 # [CoolifyServer] Coolify MCP Server started successfully
 
 # Press Ctrl+C to stop
@@ -277,7 +277,7 @@ tail -f ~/.config/Claude/logs/mcp-server-coolify.log
 ```
 ✅ Environment variables set
 ✅ npm run build successful
-✅ npm start shows "37 tools registered"
+✅ npm start shows "35 tools registered"
 ✅ Claude Desktop config updated
 ✅ Claude Desktop restarted
 ✅ Can list servers/applications
@@ -314,7 +314,7 @@ Once you've verified everything works:
 
 1. **Use Daily**
    - Integrate into your workflow
-   - Test all 37 tools
+   - Test all 35 tools
    - Try different batch operations
    - Report any issues
 
@@ -377,7 +377,7 @@ If you encounter issues:
 ## ✨ Enjoy Your Coolify MCP Server!
 
 You now have:
-- ✅ 37 tools for complete Coolify management
+- ✅ 35 tools for complete Coolify management
 - ✅ 10x faster batch operations
 - ✅ Professional, type-safe codebase
 - ✅ Comprehensive documentation
