@@ -12,6 +12,18 @@ import { createLogger } from '../utils/logger.js';
 import { ListServersTool } from './servers/list-servers.js';
 import { GetServerResourcesTool } from './servers/get-server-resources.js';
 
+// Import key tools
+import { ListPrivateKeysTool } from './keys/list-private-keys.js';
+import { CreatePrivateKeyTool } from './keys/create-private-key.js';
+
+// Import deployment tools
+import { ListDeploymentsTool } from './deployments/list-deployments.js';
+import { GetDeploymentTool } from './deployments/get-deployment.js';
+
+// Import environment tools
+import { ListEnvironmentsTool } from './environments/list-environments.js';
+import { CreateEnvironmentTool } from './environments/create-environment.js';
+
 type ToolConstructor = new (apiClient: AxiosInstance, version?: CoolifyVersion) => BaseTool;
 
 export class ToolRegistry {
@@ -34,14 +46,23 @@ export class ToolRegistry {
       ListServersTool,
       GetServerResourcesTool,
 
+      // Private Key tools
+      ListPrivateKeysTool,
+      CreatePrivateKeyTool,
+
+      // Deployment tools
+      ListDeploymentsTool,
+      GetDeploymentTool,
+
+      // Environment tools
+      ListEnvironmentsTool,
+      CreateEnvironmentTool,
+
       // TODO: Add more tools as they are migrated:
       // - Projects
       // - Applications
       // - Services
-      // - Deployments
       // - Teams
-      // - Environments
-      // - Private Keys
     ];
 
     toolClasses.forEach((ToolClass) => {
