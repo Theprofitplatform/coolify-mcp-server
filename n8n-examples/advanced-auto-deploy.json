@@ -11,7 +11,10 @@
       "name": "GitHub Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
-      "position": [250, 300],
+      "position": [
+        250,
+        300
+      ],
       "webhookId": "github-deploy"
     },
     {
@@ -29,7 +32,10 @@
       "name": "Filter Branch",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
-      "position": [450, 300]
+      "position": [
+        450,
+        300
+      ]
     },
     {
       "parameters": {
@@ -38,7 +44,10 @@
       "name": "Parse Webhook Data",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [650, 200]
+      "position": [
+        650,
+        200
+      ]
     },
     {
       "parameters": {
@@ -51,7 +60,10 @@
       "name": "Pre-Deploy Health Check",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
-      "position": [850, 200],
+      "position": [
+        850,
+        200
+      ],
       "continueOnFail": true
     },
     {
@@ -64,7 +76,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer ***REMOVED***"
+              "value": "Bearer YOUR-COOLIFY-API-TOKEN-HERE"
             }
           ]
         },
@@ -73,7 +85,10 @@
       "name": "Deploy to Coolify",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
-      "position": [1050, 200],
+      "position": [
+        1050,
+        200
+      ],
       "continueOnFail": true
     },
     {
@@ -91,7 +106,10 @@
       "name": "Check Deploy Success",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
-      "position": [1250, 200]
+      "position": [
+        1250,
+        200
+      ]
     },
     {
       "parameters": {
@@ -101,7 +119,10 @@
       "name": "Wait for Deployment",
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1,
-      "position": [1450, 100]
+      "position": [
+        1450,
+        100
+      ]
     },
     {
       "parameters": {
@@ -118,7 +139,10 @@
       "name": "Post-Deploy Health Check",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
-      "position": [1650, 100],
+      "position": [
+        1650,
+        100
+      ],
       "continueOnFail": true
     },
     {
@@ -136,7 +160,10 @@
       "name": "Check Health",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
-      "position": [1850, 100]
+      "position": [
+        1850,
+        100
+      ]
     },
     {
       "parameters": {
@@ -148,7 +175,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer ***REMOVED***"
+              "value": "Bearer YOUR-COOLIFY-API-TOKEN-HERE"
             }
           ]
         }
@@ -156,7 +183,10 @@
       "name": "Rollback on Failure",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 3,
-      "position": [1850, 300],
+      "position": [
+        1850,
+        300
+      ],
       "continueOnFail": true
     },
     {
@@ -166,7 +196,10 @@
       "name": "Format Success Message",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [2050, 100]
+      "position": [
+        2050,
+        100
+      ]
     },
     {
       "parameters": {
@@ -175,7 +208,10 @@
       "name": "Format Failure Message",
       "type": "n8n-nodes-base.function",
       "typeVersion": 1,
-      "position": [2050, 300]
+      "position": [
+        2050,
+        300
+      ]
     },
     {
       "parameters": {
@@ -189,7 +225,10 @@
       "name": "Notify Slack",
       "type": "n8n-nodes-base.slack",
       "typeVersion": 1,
-      "position": [2250, 200],
+      "position": [
+        2250,
+        200
+      ],
       "continueOnFail": true,
       "disabled": true,
       "notes": "Enable and configure Slack webhook to use"
@@ -203,7 +242,10 @@
       "name": "Webhook Response",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [2450, 200]
+      "position": [
+        2450,
+        200
+      ]
     },
     {
       "parameters": {
@@ -220,7 +262,10 @@
       "name": "Or Staging Branch",
       "type": "n8n-nodes-base.if",
       "typeVersion": 1,
-      "position": [450, 400]
+      "position": [
+        450,
+        400
+      ]
     }
   ],
   "connections": {
