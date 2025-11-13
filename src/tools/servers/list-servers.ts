@@ -8,6 +8,11 @@ import { BaseTool } from '../base.js';
 import { ListServersSchema } from '../../schemas/server.schemas.js';
 
 export class ListServersTool extends BaseTool {
+  constructor(apiClient: any, version?: any) {
+    super(apiClient, version);
+    this.initLogger();
+  }
+
   get name(): string {
     return 'list_servers';
   }
