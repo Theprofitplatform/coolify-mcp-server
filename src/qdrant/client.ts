@@ -19,11 +19,13 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';
 /**
  * Qdrant client instance
  * Note: We use Docker network access by default since Qdrant runs in a container
+ * For Cloudflare Tunnel access, use port 443 with https: true
  */
 export const qdrantClient = new QdrantClient({
-  url: `http://${QDRANT_HOST}:${QDRANT_PORT}`,
+  host: QDRANT_HOST,
+  port: QDRANT_PORT,
+  https: QDRANT_PORT === 443,
   apiKey: QDRANT_API_KEY,
-  checkCompatibility: false, // Skip version check for Docker network access
 });
 
 /**
