@@ -56,6 +56,13 @@ import { StartServiceTool } from './services/start-service.js';
 import { StopServiceTool } from './services/stop-service.js';
 import { RestartServiceTool } from './services/restart-service.js';
 
+// Batch operation tools
+import { BatchRestartApplicationsTool } from './batch/batch-restart-applications.js';
+import { BatchStopApplicationsTool } from './batch/batch-stop-applications.js';
+import { BatchStartServicesTool } from './batch/batch-start-services.js';
+import { BatchStopServicesTool } from './batch/batch-stop-services.js';
+import { BatchUpdateEnvVarsTool } from './batch/batch-update-env-vars.js';
+
 type ToolConstructor = new (apiClient: AxiosInstance, version?: CoolifyVersion) => BaseTool;
 
 export class ToolRegistry {
@@ -121,6 +128,13 @@ export class ToolRegistry {
       StartServiceTool,
       StopServiceTool,
       RestartServiceTool,
+
+      // Batch operation tools (5)
+      BatchRestartApplicationsTool,
+      BatchStopApplicationsTool,
+      BatchStartServicesTool,
+      BatchStopServicesTool,
+      BatchUpdateEnvVarsTool,
     ];
 
     toolClasses.forEach((ToolClass) => {
