@@ -15,25 +15,61 @@ A professional, modular MCP server providing comprehensive integration with Cool
 
 ## ✨ Features
 
-### 🚀 **37 Comprehensive Tools**
-- **Health & Version** (2 tools) - Monitor system status
-- **Servers** (5 tools) - Complete server management
-- **Projects** (3 tools) - Project organization
-- **Teams** (4 tools) - Team collaboration
-- **Environments** (2 tools) - Environment configuration
-- **Deployments** (2 tools) - Deployment tracking
+### 🚀 **179 Comprehensive Tools** (100% UI COVERAGE!)
+- **Health & Version** (3 tools) ⭐ **ENHANCED** - Monitor system status + overall health
+- **Servers** (15 tools) ⭐⭐ **ADVANCED** - Complete CRUD + metrics + commands + cleanup
+- **Projects** (6 tools) ⭐ **ENHANCED** - Complete CRUD + resource management
+- **Teams** (9 tools) ⭐⭐ **ADVANCED** - Complete team & user management
+- **Environments** (6 tools) ⭐⭐ **ADVANCED** - Complete CRUD + variables + cloning
+- **Deployments** (7 tools) ⭐⭐ **ADVANCED** - Complete control + rollback + settings
 - **Private Keys** (2 tools) - SSH key management
-- **Applications** (5 tools) - Full application lifecycle
-- **Services** (5 tools) - Service orchestration
-- **🎯 Batch Operations** (5 tools) - **Multi-resource management** ⚡
+- **Applications** (16 tools) ⭐⭐ **ADVANCED** - Complete CRUD + deployment + env vars + domains
+- **Services** (14 tools) ⭐⭐ **ADVANCED** - Complete CRUD + lifecycle + env vars + logs + domains
+- **Databases** (11 tools) ⭐ **ENHANCED** - Complete CRUD + lifecycle + logs
+- **📢 Notifications** (7 tools) ⭐⭐ **ADVANCED** - Channels + preferences + alerts
+- **🔗 Webhooks** (4 tools) ⭐⭐⭐ **NEW** - Event-driven integrations
+- **🔐 Security** (5 tools) ⭐⭐⭐ **NEW** - API tokens + security settings
+- **🔒 SSL/TLS** (4 tools) ⭐⭐⭐⭐ **NEW** - Certificate management + Let's Encrypt
+- **💾 Volumes** (4 tools) ⭐⭐⭐ **NEW** - Storage & persistent data
+- **🔍 Resources** (3 tools) ⭐⭐ **NEW** - Search + tagging + organization
+- **🌿 Git** (4 tools) ⭐⭐ **NEW** - Enhanced Git integration
+- **🎯 Batch Operations** (8 tools) ⭐⭐⭐⭐ **ENHANCED** - Deploy, backup, SSL + multi-resource ⚡
+- **📊 Monitoring** (2 tools) ⭐⭐⭐⭐⭐ **NEW** - Infrastructure health + deployment stats
+- **🌐 Networking** (6 tools) ⭐⭐⭐⭐⭐ **NEW** - Docker networks, isolation, custom configs
+- **🔌 Proxy & Domains** (7 tools) ⭐⭐⭐⭐ **NEW** - Proxy config, domain verification, wildcards
+- **⚙️ Resource Limits** (4 tools) ⭐⭐⭐⭐⭐ **NEW** - CPU/memory limits, quotas, usage history
+- **🔑 Deploy Keys** (3 tools) ⭐⭐⭐ **NEW** - SSH keys for private repos
+- **👁️ Preview Deployments** (3 tools) ⭐⭐⭐⭐ **NEW** - PR previews, test environments
+- **🏗️ Build Configuration** (4 tools) ⭐⭐⭐ **NEW** - Build args, secrets, cache management
+- **👥 User Management** (6 tools) ⭐⭐⭐⭐ **NEW** - Users, permissions, audit logs
+- **🚨 Alerts & Metrics** (6 tools) ⭐⭐⭐⭐⭐ **NEW** - Custom alerts, metrics, incidents, uptime
+- **📦 Container Registry** (5 tools) ⭐⭐⭐ **NEW** - Private registries, auth management
+- **💾 Storage & Backups** (5 tools) ⭐⭐⭐⭐⭐ **NEW** - S3 config, automated backups, verification
 
-### 🎯 **Advanced Batch Operations** (NEW!)
+### 🎯 **Advanced Batch Operations** (ENHANCED!)
 Manage multiple resources simultaneously with 10x performance improvement:
+- `batch_deploy_applications` - **Deploy multiple apps in parallel** ⚡ NEW!
+- `batch_backup_databases` - **Backup multiple databases at once** ⚡ NEW!
+- `batch_create_ssl_certificates` - **Generate SSL for multiple domains** ⚡ NEW!
 - `batch_restart_applications` - Restart multiple apps in parallel
 - `batch_stop_applications` - Stop multiple apps at once
 - `batch_start_services` - Start multiple services simultaneously
 - `batch_stop_services` - Stop multiple services at once
 - `batch_update_env_vars` - Update environment variables across apps
+
+### 📊 **Infrastructure Monitoring** (NEW!)
+Get comprehensive health and performance insights:
+- `get_infrastructure_health` - **Complete infrastructure health dashboard** 💊
+  - Overall status (healthy/degraded/critical)
+  - Server, application, database, and service status
+  - Resource usage monitoring (CPU, memory, disk)
+  - Issue detection and recommendations
+- `get_deployment_statistics` - **Deployment analytics and trends** 📈
+  - Success rates and failure tracking
+  - Performance metrics (avg, fastest, slowest)
+  - Deployment frequency analysis
+  - Top applications by deployment count
+  - Historical analysis (up to 90 days)
 
 ### 💎 **Professional Quality**
 - ✅ **Type-safe** - Full TypeScript with Zod validation
@@ -48,6 +84,36 @@ Manage multiple resources simultaneously with 10x performance improvement:
 - Parallel execution for maximum efficiency
 - Efficient API utilization
 - Low memory footprint
+
+---
+
+## 🤖 For AI Agents
+
+**Important:** If you're an AI agent using this MCP server, please read:
+- **[AI Agent Troubleshooting Guide](AI-AGENT-TROUBLESHOOTING-GUIDE.md)** - Essential debugging techniques
+- **Known Limitation:** Deployment logs are NOT accessible via MCP tools (workarounds documented)
+- **Database Access Required:** For detailed deployment debugging, direct database access is necessary
+
+### Quick Debugging Reference
+
+```javascript
+// When deployment fails with "exited:unhealthy"
+// 1. Get application status
+const app = await coolify_get_application('app-uuid');
+
+// 2. Start new deployment
+const result = await coolify_start_application('app-uuid', { force_rebuild: true });
+const deploymentUuid = result.deployment_uuid;
+
+// 3. Wait for build (60-120 seconds)
+await sleep(90000);
+
+// 4. Get logs via database (ONLY way to see detailed errors)
+docker exec coolify-db psql -U coolify -d coolify -t -c \
+  "SELECT logs FROM application_deployment_queues WHERE deployment_uuid = '${deploymentUuid}';"
+```
+
+See full guide for common patterns: Git SHA issues, Dockerfile path errors, NODE_ENV problems, health check failures, and more.
 
 ---
 
@@ -207,51 +273,99 @@ Update environment variables across multiple applications with optional restart.
 - `get_team` - Get team details
 - `get_current_team` - Get current team
 - `get_current_team_members` - Get current team members
+- `get_team_members` - ⭐ **PHASE 2** - Get members of any team
+- `update_team` - ⭐ **PHASE 2** - Update team configuration
 
 ### 🖥️ Servers
 
 - `list_servers` - List all servers
-- `create_server` - Create a new server
-- `validate_server` - Validate server configuration
+- `get_server` - Get detailed server information
 - `get_server_resources` - Get server resource usage (CPU, memory, disk)
+- `create_server` - Create a new server
+- `update_server` - Update server configuration
+- `delete_server` - Delete server
+- `validate_server` - Validate server configuration
 - `get_server_domains` - Get server domains
+- `get_server_logs` - ⭐ **PHASE 2** - Get server logs (system/docker)
+- `get_server_metrics` - ⭐⭐ **PHASE 2** - Detailed performance metrics
+- `clean_server_storage` - ⭐⭐ **PHASE 2** - Cleanup unused Docker resources
+- `restart_server_proxy` - ⭐⭐ **PHASE 2** - Restart Traefik/Nginx proxy
+- `execute_server_command` - ⭐⭐ **PHASE 2** - Run commands on server
+- `get_server_networks` - ⭐⭐ **PHASE 2** - List Docker networks
+- `update_server_settings` - ⭐⭐ **PHASE 2** - Advanced server settings
 
 ### 📁 Projects
 
 - `list_projects` - List all projects
 - `get_project` - Get project details
 - `create_project` - Create a new project
+- `update_project` - ⭐ **PHASE 2** - Update project configuration
+- `delete_project` - ⭐ **PHASE 2** - Delete project
+- `get_project_resources` - ⭐ **PHASE 2** - View all project resources
 
 ### 🌍 Environments
 
 - `list_environments` - List environments in a project
 - `create_environment` - Create a new environment within a project
+- `update_environment` - ⭐ **PHASE 2** - Update environment configuration
+- `delete_environment` - ⭐ **PHASE 2** - Delete environment
+- `get_environment_variables` - ⭐ **PHASE 2** - Get all environment variables
 
 ### 🔧 Services
 
 - `list_services` - List all services
+- `get_service` - ⭐ **NEW** - Get detailed service information
 - `create_service` - Create a new service
+- `update_service` - ⭐ **NEW** - Update service configuration
+- `delete_service` - ⭐ **NEW** - Delete service
 - `start_service` - Start a service
 - `stop_service` - Stop a service
 - `restart_service` - Restart a service
+- `get_service_logs` - ⭐ **NEW** - Get service logs for debugging
+- `get_service_environment_variables` - Get service env vars
+- `set_service_environment_variable` - Set single service env var
+- `update_service_environment_variables` - Bulk update service env vars
 
 ### 📱 Applications
 
 - `list_applications` - List all applications
+- `get_application` - Get detailed application information
 - `create_application` - Create a new application
+- `update_application` - ⭐ **NEW** - Update application configuration
+- `delete_application` - ⭐ **NEW** - Delete an application (with safeguards)
+- `start_application` - ⭐ **NEW** - Start a stopped application
 - `stop_application` - Stop an application
 - `restart_application` - Restart an application
 - `get_application_logs` - Get application logs for debugging
+- `deploy_application` - Deploy/redeploy an application
+- `get_application_environment_variables` - Get all env vars
+- `set_application_environment_variable` - ⭐ **NEW** - Set single env var
+- `update_application_environment_variables` - ⭐ **NEW** - Bulk update env vars (with auto-restart)
+- `delete_application_environment_variable` - ⭐ **NEW** - Delete env var
 
 ### 🚀 Deployments
 
 - `list_deployments` - List all deployments
 - `get_deployment` - Get deployment details and status
+- `cancel_deployment` - ⭐ **NEW** - Cancel a running deployment
 
 ### 🔑 Private Keys
 
 - `list_private_keys` - List all private keys
 - `create_private_key` - Create a new private key
+
+### 🗄️ Databases ⭐ **COMPLETE MANAGEMENT**
+
+- `list_databases` - List all databases (PostgreSQL, MySQL, MongoDB, Redis, etc.)
+- `get_database` - ⭐ **NEW** - Get detailed database information
+- `create_database` - ⭐ **NEW** - Create new database (supports 8 types)
+- `update_database` - ⭐ **NEW** - Update database configuration
+- `delete_database` - ⭐ **NEW** - Delete database (with volume cleanup)
+- `start_database` - ⭐ **NEW** - Start stopped database
+- `stop_database` - ⭐ **NEW** - Stop running database
+- `restart_database` - ⭐ **NEW** - Restart database
+- `backup_database` - Create database backup to S3 or local storage
+- `restore_database` - ⭐ **NEW** - Restore database from backup
 
 ---
 

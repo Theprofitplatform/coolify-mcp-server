@@ -1,0 +1,176 @@
+[
+  {
+    "name": "n8n Automation",
+    "type": "http",
+    "url": "https://n8n.theprofitplatform.com.au",
+    "interval": 60,
+    "retryInterval": 60,
+    "resendInterval": 0,
+    "maxRetries": 3,
+    "description": "n8n workflow automation platform",
+    "accepted_statuscodes": [
+      "200-299"
+    ]
+  },
+  {
+    "name": "Main Website",
+    "type": "http",
+    "url": "https://theprofitplatform.com.au",
+    "interval": 60,
+    "retryInterval": 60,
+    "resendInterval": 0,
+    "maxRetries": 3,
+    "description": "The Profit Platform main website",
+    "accepted_statuscodes": [
+      "200-299"
+    ]
+  },
+  {
+    "name": "Coolify Dashboard",
+    "type": "http",
+    "url": "https://coolify.theprofitplatform.com.au",
+    "interval": 60,
+    "retryInterval": 60,
+    "resendInterval": 0,
+    "maxRetries": 3,
+    "description": "Coolify deployment dashboard",
+    "accepted_statuscodes": [
+      "200-299",
+      "302"
+    ]
+  },
+  {
+    "name": "SEO Dashboard",
+    "type": "http",
+    "url": "http://localhost:9000/api/v2/health",
+    "interval": 120,
+    "retryInterval": 120,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "SEO Automation Dashboard API",
+    "accepted_statuscodes": [
+      "200-299"
+    ]
+  },
+  {
+    "name": "Repair Frontend",
+    "type": "http",
+    "url": "http://localhost:3000",
+    "interval": 120,
+    "retryInterval": 120,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "Mobile Repair Service Frontend",
+    "accepted_statuscodes": [
+      "200-299"
+    ]
+  },
+  {
+    "name": "PostgreSQL (Main)",
+    "type": "port",
+    "hostname": "localhost",
+    "port": 5432,
+    "interval": 300,
+    "retryInterval": 300,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "Main PostgreSQL database"
+  },
+  {
+    "name": "PostgreSQL (Repair)",
+    "type": "port",
+    "hostname": "localhost",
+    "port": 5433,
+    "interval": 300,
+    "retryInterval": 300,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "Repair service PostgreSQL database"
+  },
+  {
+    "name": "Redis Cache",
+    "type": "port",
+    "hostname": "localhost",
+    "port": 6379,
+    "interval": 300,
+    "retryInterval": 300,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "Redis cache server"
+  },
+  {
+    "name": "Qdrant Vector DB",
+    "type": "http",
+    "url": "https://qdrant.theprofitplatform.com.au",
+    "interval": 300,
+    "retryInterval": 300,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "Qdrant vector database",
+    "accepted_statuscodes": [
+      "200-299"
+    ]
+  },
+  {
+    "name": "Jenkins CI/CD",
+    "type": "http",
+    "url": "http://localhost:8080",
+    "interval": 300,
+    "retryInterval": 300,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "Jenkins automation server",
+    "accepted_statuscodes": [
+      "200-299",
+      "302",
+      "403"
+    ]
+  },
+  {
+    "name": "Glitchtip Error Tracking",
+    "type": "http",
+    "url": "http://localhost:8001",
+    "interval": 300,
+    "retryInterval": 300,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "Glitchtip error tracking service",
+    "accepted_statuscodes": [
+      "200-299",
+      "400"
+    ]
+  },
+  {
+    "name": "GitHub Runner 1",
+    "type": "docker",
+    "docker_container": "runner-1-vs4o4ogkcgwgwo8kgksg4koo",
+    "docker_host": null,
+    "interval": 120,
+    "retryInterval": 120,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "GitHub Actions runner 1"
+  },
+  {
+    "name": "GitHub Runner 5",
+    "type": "docker",
+    "docker_container": "runner-5-vs4o4ogkcgwgwo8kgksg4koo",
+    "docker_host": null,
+    "interval": 120,
+    "retryInterval": 120,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "GitHub Actions runner 5"
+  },
+  {
+    "name": "GitHub Runner Automation",
+    "type": "docker",
+    "docker_container": "runner-automation-vs4o4ogkcgwgwo8kgksg4koo",
+    "docker_host": null,
+    "interval": 120,
+    "retryInterval": 120,
+    "resendInterval": 0,
+    "maxRetries": 2,
+    "description": "GitHub Actions automation runner"
+  }
+]

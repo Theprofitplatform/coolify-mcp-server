@@ -14,6 +14,7 @@ export default {
       },
     ],
   },
+  setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   testMatch: [
     '**/tests/**/*.test.ts',
     '**/__tests__/**/*.test.ts'
