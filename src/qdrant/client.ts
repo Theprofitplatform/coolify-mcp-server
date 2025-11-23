@@ -8,10 +8,25 @@
 import { QdrantClient } from '@qdrant/js-client-rest';
 import OpenAI from 'openai';
 
-// Qdrant configuration from environment
-const QDRANT_HOST = process.env.QDRANT_HOST || 'qdrant-j4kss8084c008sskcko8oks0';
+// Qdrant configuration from environment (REQUIRED - no hardcoded fallbacks)
+const QDRANT_HOST = process.env.QDRANT_HOST;
 const QDRANT_PORT = parseInt(process.env.QDRANT_PORT || '6333');
-const QDRANT_API_KEY = process.env.QDRANT_API_KEY || '***REMOVED***';
+const QDRANT_API_KEY = process.env.QDRANT_API_KEY;
+
+// Validate required environment variables
+if (!QDRANT_HOST) {
+  throw new Error(
+    'QDRANT_HOST environment variable is required. ' +
+    'Please set it in your .env file or environment.'
+  );
+}
+
+if (!QDRANT_API_KEY) {
+  throw new Error(
+    'QDRANT_API_KEY environment variable is required. ' +
+    'Please set it in your .env file or environment.'
+  );
+}
 
 // OpenAI configuration for embeddings
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '';

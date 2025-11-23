@@ -25,7 +25,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer ***REMOVED***"
+              "value": "Bearer YOUR_COOLIFY_API_TOKEN_HERE"
             }
           ]
         },
@@ -54,7 +54,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer ***REMOVED***"
+              "value": "Bearer YOUR_COOLIFY_API_TOKEN_HERE"
             }
           ]
         },

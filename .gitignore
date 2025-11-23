@@ -49,3 +49,10 @@ credentials/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Credentials and sensitive files (added by security remediation)
+credentials.env
+coolify-mcp.service
+claude-config.json
+claude-desktop-config.json
+*.backup

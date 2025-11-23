@@ -24,7 +24,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer ***REMOVED***"
+              "value": "Bearer YOUR_COOLIFY_API_TOKEN_HERE"
             },
             {
               "name": "Content-Type",

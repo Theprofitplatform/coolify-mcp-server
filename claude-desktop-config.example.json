@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "coolify": {
+      "command": "node",
+      "args": [
+        "/home/avi/projects/coolify/coolify-mcp/build/index.js"
+      ],
+      "env": {
+        "COOLIFY_BASE_URL": "https://coolify.theprofitplatform.com.au",
+        "COOLIFY_TOKEN": "YOUR_COOLIFY_API_TOKEN_HERE"
+      },
+      "disabled": false,
+      "autoApprove": []
+    }
+  },
+  "_warning": "⚠️ SECURITY: Replace YOUR_COOLIFY_API_TOKEN_HERE with your actual token. NEVER commit real credentials!"
+}

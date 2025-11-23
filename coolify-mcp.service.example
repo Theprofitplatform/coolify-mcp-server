@@ -1,0 +1,17 @@
+[Unit]
+Description=Coolify MCP Server
+After=network.target
+
+[Service]
+Type=simple
+User=coolify-mcp
+WorkingDirectory=/opt/coolify-mcp
+EnvironmentFile=/etc/coolify-mcp/credentials.env
+ExecStart=/usr/bin/node /opt/coolify-mcp/build/index.js
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
