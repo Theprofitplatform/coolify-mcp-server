@@ -1,6 +1,6 @@
 {
   "name": "coolify-mcp-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Enterprise-grade MCP server for Coolify with 181 tools providing 100% UI coverage - complete infrastructure management, monitoring, security, and automation",
   "type": "module",
   "main": "build/index.js",
