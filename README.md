@@ -15,15 +15,15 @@ A professional, modular MCP server providing comprehensive integration with Cool
 
 ## ✨ Features
 
-### 🚀 **179 Comprehensive Tools** (100% UI COVERAGE!)
+### 🚀 **181 Comprehensive Tools** (100% UI COVERAGE!)
 - **Health & Version** (3 tools) ⭐ **ENHANCED** - Monitor system status + overall health
 - **Servers** (15 tools) ⭐⭐ **ADVANCED** - Complete CRUD + metrics + commands + cleanup
 - **Projects** (6 tools) ⭐ **ENHANCED** - Complete CRUD + resource management
 - **Teams** (9 tools) ⭐⭐ **ADVANCED** - Complete team & user management
 - **Environments** (6 tools) ⭐⭐ **ADVANCED** - Complete CRUD + variables + cloning
-- **Deployments** (7 tools) ⭐⭐ **ADVANCED** - Complete control + rollback + settings
+- **Deployments** (8 tools) ⭐⭐ **ADVANCED** - Complete control + rollback + settings
 - **Private Keys** (2 tools) - SSH key management
-- **Applications** (16 tools) ⭐⭐ **ADVANCED** - Complete CRUD + deployment + env vars + domains
+- **Applications** (17 tools) ⭐⭐ **ADVANCED** - Complete CRUD + deployment + env vars + domains
 - **Services** (14 tools) ⭐⭐ **ADVANCED** - Complete CRUD + lifecycle + env vars + logs + domains
 - **Databases** (11 tools) ⭐ **ENHANCED** - Complete CRUD + lifecycle + logs
 - **📢 Notifications** (7 tools) ⭐⭐ **ADVANCED** - Channels + preferences + alerts
