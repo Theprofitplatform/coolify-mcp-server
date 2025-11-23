@@ -11,7 +11,9 @@ import { BaseTool } from '../base.js';
 import { execSync } from 'child_process';
 
 const GetDeploymentLogsSchema = z.object({
-  deployment_uuid: z.string().describe('UUID of the deployment to get logs for'),
+  deployment_uuid: z.string()
+    .regex(/^[a-zA-Z0-9\-]+$/, 'Invalid UUID format - only alphanumeric and hyphens allowed')
+    .describe('UUID of the deployment to get logs for'),
   filter_errors: z.boolean().optional().describe('If true, only return error/failed log entries'),
 });
 
@@ -37,9 +39,19 @@ export class GetDeploymentLogsTool extends BaseTool {
     this.logger.info(`Fetching logs for deployment: ${args.deployment_uuid}`);
 
     try {
+      // SECURITY: Sanitize UUID to prevent SQL injection
+      // While Zod validates format, we escape single quotes as additional defense
+      const sanitizedUuid = args.deployment_uuid.replace(/'/g, "''");
+
+      // Validate UUID format one more time before execution
+      if (!/^[a-zA-Z0-9\-]+$/.test(sanitizedUuid)) {
+        throw new Error('Invalid UUID format detected');
+      }
+
       // Query database directly for deployment logs
-      const command = `docker exec coolify-db psql -U coolify -d coolify -t -c "SELECT logs FROM application_deployment_queues WHERE deployment_uuid = '${args.deployment_uuid}';"`;
-      
+      // Note: Using parameterized approach via psql -v would be safer but requires different setup
+      const command = `docker exec coolify-db psql -U coolify -d coolify -t -c "SELECT logs FROM application_deployment_queues WHERE deployment_uuid = '${sanitizedUuid}';"`;
+
       const result = execSync(command, { 
         encoding: 'utf-8',
         maxBuffer: 10 * 1024 * 1024 // 10MB buffer for large logs

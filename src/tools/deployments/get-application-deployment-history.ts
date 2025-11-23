@@ -10,8 +10,16 @@ import { BaseTool } from '../base.js';
 import { execSync } from 'child_process';
 
 const GetApplicationDeploymentHistorySchema = z.object({
-  application_uuid: z.string().describe('UUID of the application'),
-  limit: z.number().optional().default(10).describe('Number of recent deployments to retrieve (default: 10, max: 50)'),
+  application_uuid: z.string()
+    .regex(/^[a-zA-Z0-9\-]+$/, 'Invalid UUID format - only alphanumeric and hyphens allowed')
+    .describe('UUID of the application'),
+  limit: z.number()
+    .int()
+    .min(1)
+    .max(50)
+    .optional()
+    .default(10)
+    .describe('Number of recent deployments to retrieve (default: 10, max: 50)'),
 });
 
 export class GetApplicationDeploymentHistoryTool extends BaseTool {
@@ -36,10 +44,20 @@ export class GetApplicationDeploymentHistoryTool extends BaseTool {
     this.logger.info(`Fetching deployment history for application: ${args.application_uuid}`);
 
     try {
-      const limit = Math.min(args.limit || 10, 50); // Cap at 50
+      // SECURITY: Sanitize all inputs to prevent SQL injection
+      const sanitizedUuid = args.application_uuid.replace(/'/g, "''");
+      const limit = Math.min(args.limit || 10, 50); // Already validated by Zod but double-check
+
+      // Validate inputs before execution
+      if (!/^[a-zA-Z0-9\-]+$/.test(sanitizedUuid)) {
+        throw new Error('Invalid UUID format detected');
+      }
+      if (!Number.isInteger(limit) || limit < 1 || limit > 50) {
+        throw new Error('Invalid limit value');
+      }
 
       // First check if application exists
-      const appCheckCommand = `docker exec coolify-db psql -U coolify -d coolify -t -c "SELECT id FROM applications WHERE uuid = '${args.application_uuid}';"`;
+      const appCheckCommand = `docker exec coolify-db psql -U coolify -d coolify -t -c "SELECT id FROM applications WHERE uuid = '${sanitizedUuid}';"`;
       const appId = execSync(appCheckCommand, { encoding: 'utf-8' }).trim();
 
       if (!appId) {
@@ -50,10 +68,13 @@ export class GetApplicationDeploymentHistoryTool extends BaseTool {
         }, null, 2);
       }
 
+      // SECURITY: Sanitize appId as well (defensive programming)
+      const sanitizedAppId = appId.replace(/'/g, "''");
+
       // Query deployment history using both UUID and ID
       // Note: application_id in deployment queue is VARCHAR and stores UUIDs, not integer IDs
-      const command = `docker exec coolify-db psql -U coolify -d coolify -t -A -F'|' -c "SELECT deployment_uuid, status, created_at, updated_at, finished_at, application_id FROM application_deployment_queues WHERE application_id = '${args.application_uuid}' OR application_id = '${appId}' ORDER BY created_at DESC LIMIT ${limit};"`;
-      
+      const command = `docker exec coolify-db psql -U coolify -d coolify -t -A -F'|' -c "SELECT deployment_uuid, status, created_at, updated_at, finished_at, application_id FROM application_deployment_queues WHERE application_id = '${sanitizedUuid}' OR application_id = '${sanitizedAppId}' ORDER BY created_at DESC LIMIT ${limit};"`;
+
       const result = execSync(command, { encoding: 'utf-8' });
 
       if (!result || result.trim() === '') {

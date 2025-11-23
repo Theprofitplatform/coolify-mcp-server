@@ -141,14 +141,32 @@ export class BulkUpdateEnvVarsTool extends BaseTool {
     try {
       this.logger.info('Attempting direct database update (requires local Coolify installation)');
 
+      // SECURITY: Sanitize UUID to prevent SQL injection
+      const sanitizedUuid = args.uuid.replace(/'/g, "''");
+
+      // Validate UUID format
+      if (!/^[a-zA-Z0-9\-]+$/.test(sanitizedUuid)) {
+        throw new Error('Invalid UUID format detected');
+      }
+
+      // SECURITY: Sanitize all environment variable keys
+      const sanitizedKeys = Object.keys(args.env_vars).map(k => {
+        const sanitizedKey = k.replace(/'/g, "''");
+        // Validate key format (alphanumeric, underscore, dash)
+        if (!/^[a-zA-Z0-9_\-]+$/.test(k)) {
+          throw new Error(`Invalid environment variable key format: ${k}`);
+        }
+        return `'${sanitizedKey}'`;
+      }).join(',');
+
       // First, get existing env var UUIDs
       const getUuidsQuery = `
-        SELECT key, uuid 
-        FROM environment_variables 
-        WHERE resourceable_type = 'App\\\\Models\\\\Application' 
-        AND resourceable_id = (SELECT id FROM applications WHERE uuid = '${args.uuid}')
+        SELECT key, uuid
+        FROM environment_variables
+        WHERE resourceable_type = 'App\\\\Models\\\\Application'
+        AND resourceable_id = (SELECT id FROM applications WHERE uuid = '${sanitizedUuid}')
         AND is_preview = false
-        AND key IN (${Object.keys(args.env_vars).map(k => `'${k}'`).join(',')})
+        AND key IN (${sanitizedKeys})
       `;
 
       const { stdout: uuidResult } = await execAsync(
