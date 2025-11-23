@@ -36,3 +36,22 @@ export const StopServiceSchema = z.object({
 export const RestartServiceSchema = z.object({
   uuid: commonSchemas.uuid,
 });
+
+// Get Service Environment Variables Schema
+export const GetServiceEnvVarsSchema = z.object({
+  uuid: commonSchemas.uuid,
+});
+
+// Set Service Environment Variable Schema
+export const SetServiceEnvVarSchema = z.object({
+  uuid: commonSchemas.uuid,
+  key: z.string().describe('Environment variable key/name'),
+  value: z.string().describe('Environment variable value'),
+});
+
+// Update Service Environment Variables Schema
+export const UpdateServiceEnvVarsSchema = z.object({
+  uuid: commonSchemas.uuid,
+  env_vars: z.record(z.string(), z.string()).describe('Object with key-value pairs of environment variables'),
+  restart_after_update: z.boolean().optional().describe('Automatically restart service after update'),
+});

@@ -50,30 +50,57 @@ class CoolifyServer {
   }
 
   private initializeAxios(config: CoolifyConfig) {
+    const timeout = parseInt(process.env.COOLIFY_API_TIMEOUT || '60000', 10);
+    const maxRetries = parseInt(process.env.COOLIFY_API_MAX_RETRIES || '5', 10);
+    const retryDelay = parseInt(process.env.COOLIFY_API_RETRY_DELAY || '2000', 10);
+
     this.axiosInstance = axios.create({
       baseURL: `${config.baseUrl}/api/v1`,
       headers: {
         'Authorization': `Bearer ${config.token}`,
         'Content-Type': 'application/json'
       },
-      timeout: 30000
+      timeout
     });
 
-    // Add response interceptor for rate limiting
+    // Add response interceptor for rate limiting with retry logic
     this.axiosInstance.interceptors.response.use(
       (response) => response,
-      (error) => {
-        if (axios.isAxiosError(error) && error.response?.status === 429) {
-          const retryAfter = error.response.headers['retry-after'];
-          const message = `Rate limit exceeded. ${retryAfter ? `Retry after ${retryAfter} seconds.` : 'Please wait before making more requests.'}`;
-          throw new McpError(ErrorCode.InternalError, `Coolify API rate limit: ${message}`);
+      async (error) => {
+        const config = error.config;
+        
+        // Initialize retry count
+        if (!config.__retryCount) {
+          config.__retryCount = 0;
         }
+
+        // Handle rate limiting with automatic retry
+        if (axios.isAxiosError(error) && error.response?.status === 429) {
+          if (config.__retryCount < maxRetries) {
+            config.__retryCount++;
+            
+            const retryAfter = error.response.headers['retry-after'];
+            const waitTime = retryAfter ? parseInt(retryAfter) * 1000 : retryDelay * config.__retryCount;
+            
+            this.logger.info(`Rate limit hit, retrying after ${waitTime}ms (attempt ${config.__retryCount}/${maxRetries})`);
+            
+            await new Promise(resolve => setTimeout(resolve, waitTime));
+            return this.axiosInstance!.request(config);
+          } else {
+            const message = `Rate limit exceeded after ${maxRetries} retries. Please wait before making more requests.`;
+            throw new McpError(ErrorCode.InternalError, `Coolify API rate limit: ${message}`);
+          }
+        }
+        
         return Promise.reject(error);
       }
     );
 
     this.logger.info('Axios client initialized', {
       baseURL: config.baseUrl,
+      timeout,
+      maxRetries,
+      retryDelay
     });
   }
 

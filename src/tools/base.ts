@@ -120,12 +120,112 @@ export abstract class BaseTool {
    * Convert Zod schema to JSON Schema for MCP protocol
    */
   protected zodToJsonSchema(schema: z.ZodSchema): any {
-    // Basic implementation - can be enhanced with zod-to-json-schema library
+    // Import zodToJsonSchema dynamically
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { zodToJsonSchema: converter } = require('zod-to-json-schema');
+      return converter(schema);
+    } catch (error) {
+      // Fallback to manual conversion if zod-to-json-schema not available
+      this.logger.warn('zod-to-json-schema not available, using fallback conversion');
+      return this.manualZodToJsonSchema(schema);
+    }
+  }
+
+  /**
+   * Manual fallback for Zod to JSON Schema conversion
+   */
+  private manualZodToJsonSchema(schema: z.ZodSchema): any {
+    // Support both Zod 3.x (_def.shape) and Zod 4.x (def.shape)
+    const shape = (schema as any).shape || (schema as any).def?.shape || (schema as any)._def?.shape;
+    
+    if (!shape) {
+      return {
+        type: 'object',
+        properties: {},
+      };
+    }
+
+    const properties: any = {};
+    const required: string[] = [];
+
+    for (const [key, value] of Object.entries(shape)) {
+      const zodType = value as any;
+      
+      // Check if optional or has default - support both Zod 3.x and 4.x
+      const typeName = zodType.type || zodType.def?.type || zodType._def?.typeName;
+      const isOptional = typeName === 'optional' || typeName === 'ZodOptional';
+      const hasDefault = typeName === 'default' || typeName === 'ZodDefault';
+      
+      // Always pass the full zodType to preserve descriptions
+      properties[key] = this.zodTypeToJsonSchema(zodType);
+      
+      // Only add to required if not optional or has default
+      if (!isOptional && !hasDefault) {
+        required.push(key);
+      }
+    }
+
     return {
       type: 'object',
-      properties: {},
-      required: [],
+      properties,
+      ...(required.length > 0 && { required }),
     };
+  }
+
+  /**
+   * Convert individual Zod type to JSON Schema
+   */
+  private zodTypeToJsonSchema(zodType: any): any {
+    // Support both Zod 3.x (_def.typeName) and Zod 4.x (type or def.type)
+    const typeName = zodType.type || zodType.def?.type || zodType._def?.typeName;
+    
+    // Get description - check multiple possible locations
+    const description = zodType.description || zodType.def?.description || zodType._def?.description;
+
+    const baseSchema: any = {};
+    if (description) {
+      baseSchema.description = description;
+    }
+
+    // Handle both Zod 3.x style (ZodString) and Zod 4.x style (string)
+    switch (typeName) {
+      case 'string':
+      case 'ZodString':
+        return { ...baseSchema, type: 'string' };
+      case 'number':
+      case 'ZodNumber':
+        return { ...baseSchema, type: 'number' };
+      case 'boolean':
+      case 'ZodBoolean':
+        return { ...baseSchema, type: 'boolean' };
+      case 'array':
+      case 'ZodArray':
+        const arrayType = zodType.def?.type || zodType._def?.type;
+        return {
+          ...baseSchema,
+          type: 'array',
+          items: arrayType ? this.zodTypeToJsonSchema(arrayType) : { type: 'string' },
+        };
+      case 'object':
+      case 'ZodObject':
+        return this.manualZodToJsonSchema(zodType);
+      case 'optional':
+      case 'ZodOptional':
+      case 'default':
+      case 'ZodDefault':
+        // For optional/default types, get the schema from inner type
+        const innerType = zodType.def?.innerType || zodType._def?.innerType;
+        const innerSchema = this.zodTypeToJsonSchema(innerType);
+        // Preserve description from the wrapper if inner type doesn't have one
+        if (description && !innerSchema.description) {
+          innerSchema.description = description;
+        }
+        return innerSchema;
+      default:
+        // Default fallback
+        return { ...baseSchema, type: 'string' };
+    }
   }
 
   /**
@@ -217,6 +317,19 @@ export abstract class BaseTool {
   protected async apiDelete<T = any>(endpoint: string): Promise<T> {
     try {
       const response = await this.apiClient.delete<T>(endpoint);
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+      throw error;
+    }
+  }
+
+  /**
+   * Make PATCH API request with error handling
+   */
+  protected async apiPatch<T = any>(endpoint: string, data?: any): Promise<T> {
+    try {
+      const response = await this.apiClient.patch<T>(endpoint, data);
       return response.data;
     } catch (error) {
       handleApiError(error);
