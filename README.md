@@ -4,9 +4,11 @@
 
 **Production-ready Model Context Protocol server for Coolify API integration**
 
-A professional, modular MCP server providing comprehensive integration with Coolify's self-hosted deployment platform. Built with TypeScript, featuring 35 tools including advanced batch operations for managing multiple resources simultaneously.
+A professional, modular MCP server providing comprehensive integration with Coolify's self-hosted deployment platform. Built with TypeScript, featuring 181 tools including advanced batch operations for managing multiple resources simultaneously.
 
-[![Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](https://github.com/wrediam/coolify-mcp-server)
+[![Version](https://img.shields.io/badge/version-1.0.1-blue.svg)](https://github.com/wrediam/coolify-mcp-server)
+[![Security](https://img.shields.io/badge/security-A--grade-brightgreen.svg)](SECURITY-AUDIT-REPORT.md)
+[![Tests](https://img.shields.io/badge/tests-98%2F102%20passing-brightgreen.svg)](tests/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
@@ -78,6 +80,27 @@ Get comprehensive health and performance insights:
 - ✅ **Error handling** - Graceful degradation with detailed messages
 - ✅ **Production-ready** - Battle-tested patterns and SOLID principles
 - ✅ **Well-documented** - 3,000+ lines of documentation
+
+### 🔒 **Security** (v1.0.1) ✅
+**Security Rating: A-** (Production Ready)
+
+All critical vulnerabilities fixed in v1.0.1:
+- ✅ **SQL Injection Prevention** - Defense-in-depth with Zod validation + sanitization
+- ✅ **Command Injection Protection** - Shell metacharacter blocking + command whitelisting
+- ✅ **Input Sanitization** - Comprehensive validation for all user inputs
+- ✅ **Credential Security** - No secrets in code, environment variable best practices
+- ✅ **Security Testing** - 15 dedicated security tests (100% passing)
+
+**Security Features:**
+- Strict UUID validation with regex patterns
+- SQL string escaping for database queries
+- Command validation with dangerous command blacklist
+- Path traversal prevention
+- Error message sanitization
+- Multi-layer security (schema + sanitization + validation)
+
+📖 See [SECURITY-AUDIT-REPORT.md](SECURITY-AUDIT-REPORT.md) for complete audit
+📖 See [SECURITY-FIXES-SUMMARY.md](SECURITY-FIXES-SUMMARY.md) for fix details
 
 ### ⚡ **Performance**
 - **10x faster** batch operations vs sequential
