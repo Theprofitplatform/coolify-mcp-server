@@ -1,7 +1,7 @@
 {
   "name": "coolify-mcp-server",
-  "version": "0.2.0",
-  "description": "Production-ready MCP server for Coolify API integration with 35 tools including advanced batch operations (10x faster multi-resource management)",
+  "version": "1.0.0",
+  "description": "Enterprise-grade MCP server for Coolify with 179 tools providing 100% UI coverage - complete infrastructure management, monitoring, security, and automation",
   "type": "module",
   "main": "build/index.js",
   "bin": {
