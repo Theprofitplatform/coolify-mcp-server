@@ -1,0 +1,224 @@
+[
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/v1/servers"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": [
+          {
+            "uuid": "server-mock-001",
+            "name": "Mock Production Server",
+            "description": "Primary production server",
+            "ip": "10.0.0.1",
+            "status": "running",
+            "settings": {
+              "is_reachable": true,
+              "is_usable": true
+            }
+          },
+          {
+            "uuid": "server-mock-002",
+            "name": "Mock Staging Server",
+            "description": "Staging environment",
+            "ip": "10.0.0.2",
+            "status": "running",
+            "settings": {
+              "is_reachable": true,
+              "is_usable": true
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/v1/applications"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": [
+          {
+            "uuid": "app-mock-001",
+            "name": "mock-web-app",
+            "description": "Mock web application",
+            "status": "running",
+            "fqdn": "https://app.example.com"
+          },
+          {
+            "uuid": "app-mock-002",
+            "name": "mock-api-server",
+            "description": "Mock API server",
+            "status": "running",
+            "fqdn": "https://api.example.com"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/v1/databases"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": [
+          {
+            "uuid": "db-mock-001",
+            "name": "mock-postgres",
+            "type": "postgresql",
+            "status": "running"
+          },
+          {
+            "uuid": "db-mock-002",
+            "name": "mock-redis",
+            "type": "redis",
+            "status": "running"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/v1/services"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": [
+          {
+            "uuid": "svc-mock-001",
+            "name": "mock-nginx",
+            "status": "running"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/v1/version"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "version": "4.0.0-beta.400"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/v1/healthcheck"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "status": "OK"
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/api/v1/applications/.*/restart"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "message": "Application restart triggered",
+        "success": true
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "POST",
+      "path": "/api/v1/applications/.*/deploy"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "message": "Deployment started",
+        "deployment_uuid": "deploy-mock-001",
+        "success": true
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/v1/teams"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": [
+          {
+            "id": 1,
+            "name": "Default Team",
+            "description": "Default team for testing"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "httpRequest": {
+      "method": "GET",
+      "path": "/api/v1/projects"
+    },
+    "httpResponse": {
+      "statusCode": 200,
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "data": [
+          {
+            "uuid": "proj-mock-001",
+            "name": "Mock Project",
+            "description": "Test project"
+          }
+        ]
+      }
+    }
+  }
+]

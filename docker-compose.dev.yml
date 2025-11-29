@@ -1,0 +1,78 @@
+version: '3.8'
+
+# Coolify MCP Server - Local Development Environment
+# Usage: docker-compose -f docker-compose.dev.yml up -d
+
+services:
+  # Main MCP Server (development mode)
+  coolify-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: coolify-mcp-dev
+    volumes:
+      - ./src:/app/src:ro
+      - ./tests:/app/tests:ro
+      - ./package.json:/app/package.json:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - node_modules:/app/node_modules
+    env_file:
+      - .env.dev
+    ports:
+      - "3000:3000"
+    networks:
+      - coolify-dev
+    depends_on:
+      - qdrant
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Qdrant Vector Database (for semantic search testing)
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: qdrant-dev
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant-data:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    networks:
+      - coolify-dev
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # Mock Coolify API (for testing without real instance)
+  mock-coolify:
+    image: mockserver/mockserver:latest
+    container_name: mock-coolify
+    ports:
+      - "8080:1080"
+    environment:
+      - MOCKSERVER_INITIALIZATION_JSON_PATH=/config/mock-expectations.json
+    volumes:
+      - ./tests/mocks/mock-expectations.json:/config/mock-expectations.json:ro
+    networks:
+      - coolify-dev
+    restart: unless-stopped
+
+networks:
+  coolify-dev:
+    driver: bridge
+    name: coolify-dev-network
+
+volumes:
+  node_modules:
+    name: coolify-mcp-node-modules
+  qdrant-data:
+    name: coolify-mcp-qdrant-data
